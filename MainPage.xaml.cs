@@ -1,5 +1,8 @@
 ﻿namespace Geotracker;
 
+using Geotracker.ViewModels;
+
+
 public partial class MainPage : ContentPage
 {
 	int count = 0;
@@ -7,6 +10,7 @@ public partial class MainPage : ContentPage
 	public MainPage()
 	{
 		InitializeComponent();
+		BindingContext = new MainPageViewModel();
 	}
 
 	private void OnCounterClicked(object sender, EventArgs e)
@@ -19,13 +23,5 @@ public partial class MainPage : ContentPage
 			CounterBtn.Text = $"Clicked {count} times";
 
 		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
-
-	public class Trail
-	{
-		public string Name { get; set; }
-		public string Location { get; set; }
-		public string Details { get; set; }
-		public string ImageUrl { get; set; }
 	}
 }
