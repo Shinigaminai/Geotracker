@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Geotracker.Services;
 
 namespace Geotracker;
 
@@ -16,6 +17,9 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
+
+		// add services
+		builder.Services.AddSingleton<TrailService>();
 
 #if DEBUG
 		builder.Logging.AddDebug();
