@@ -8,7 +8,10 @@
 
     <Grid>
 
-        <mapsui:MapControl x:Name="TrailMap" VerticalOptions="Fill" />
+        <mapsui:MapControl
+            x:Name="TrailMap"
+            BackgroundColor="White"
+            VerticalOptions="Fill" />
 
         <!--  Bottom Drawer  -->
         <Grid
@@ -31,7 +34,7 @@
 
             <!--  Drawer Content  -->
             <StackLayout Padding="20,30,10,10">
-                <Label Text="List of Trails" />
+                <Label Text="List of Trails" TextColor="{StaticResource SecondaryDarkText}" />
                 <CollectionView ItemsSource="{Binding Trails}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Trail">
@@ -49,12 +52,14 @@
                                     Grid.Column="1"
                                     FontAttributes="Bold"
                                     Text="{Binding Name}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
                                     VerticalOptions="Center" />
                                 <Label
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     FontAttributes="Italic"
                                     Text="{Binding Location}"
+                                    TextColor="{StaticResource SecondaryDarkText}"
                                     VerticalOptions="Center" />
                             </Grid>
                         </DataTemplate>
