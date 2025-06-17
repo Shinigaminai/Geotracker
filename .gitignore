@@ -384,3 +384,4 @@ snapshots-diff/
 temp
 .packages
 /src/Templates/.tempTemplateOutput
+Resources/Raw/mytrack.gpx

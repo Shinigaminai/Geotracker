@@ -30,7 +30,6 @@ public partial class MainPage : ContentPage
 	{
 		base.OnAppearing();
 		await viewModel.LoadTrailAsync(TrailMap);
-		// _ = LoadGpx("It_s_T_raining_men_.gpx", TrailMap); // Called when the UI is ready
 	}
 
 
