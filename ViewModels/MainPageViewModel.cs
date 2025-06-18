@@ -38,7 +38,15 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public async Task LoadTrailAsync(MapControl map)
     {
-        var trail = await _trailService.LoadTrailFromGpxAsync("mytrack.gpx");
+        var file = await _trailService.PickGpxFile();
+        if (file == null)
+        {
+            // maybe user cancelled?
+            return;
+        }
+        var fileStream = await file.OpenReadAsync();
+        var trail = await _trailService.LoadTrailFromGpxStreamAsync(fileStream);
+        Trails.Add(trail);
 
         var mercatorCoords = trail.Coordinates
             .Select(c => SphericalMercator.FromLonLat(c.X, c.Y))

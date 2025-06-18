@@ -17,7 +17,7 @@
         <Grid
             x:Name="BottomDrawer"
             BackgroundColor="{StaticResource Secondary}"
-            HeightRequest="300"
+            HeightRequest="280"
             TranslationY="250"
             VerticalOptions="End">
 
@@ -35,6 +35,12 @@
             <!--  Drawer Content  -->
             <StackLayout Padding="20,30,10,10">
                 <Label Text="List of Trails" TextColor="{StaticResource SecondaryDarkText}" />
+                <Button
+                    x:Name="AddTrailBtn"
+                    Clicked="OnAddTrailClicked"
+                    HorizontalOptions="End"
+                    SemanticProperties.Hint="Allows you to load and add a trail to the current list of trails."
+                    Text="Add trail" />
                 <CollectionView ItemsSource="{Binding Trails}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Trail">

@@ -2,15 +2,16 @@ using System.Xml.Linq;
 using NetTopologySuite.Geometries;
 
 using Geotracker.Models;
+using Java.Util.Logging;
 
 namespace Geotracker.Services;
 
 public class TrailService
 {
-    public async Task<Trail> LoadTrailFromGpxAsync(string gpxFilePath)
+    public async Task<Trail> LoadTrailFromGpxStreamAsync(Stream stream)
     {
 
-        using var stream = await FileSystem.OpenAppPackageFileAsync(gpxFilePath);
+        // using var stream = await FileSystem.OpenAppPackageFileAsync(gpxFilePath);
         using var reader = new StreamReader(stream);
 
         var trail_xml_text = await reader.ReadToEndAsync();
@@ -41,5 +42,37 @@ public class TrailService
             Location = "TBD",
             Coordinates = linePoints
         };
+    }
+
+    public async Task<FileResult?> PickGpxFile()
+    {
+        try
+        {
+            var customFileType = new FilePickerFileType(
+                new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.iOS, new[] { "com.topografix.gpx" } }, // UTType values
+                    { DevicePlatform.Android, new[] { "application/gpx+xml", "application/octet-stream" } }, // MIME type
+                    { DevicePlatform.WinUI, new[] { ".gpx" } }, // file extension
+                    { DevicePlatform.Tizen, new[] { "*/*" } },
+                    { DevicePlatform.macOS, new[] { "gpx" } }, // UTType values
+                });
+
+            PickOptions options = new()
+            {
+                PickerTitle = "Please select a comic file",
+                FileTypes = customFileType,
+            };
+            return await FilePicker.Default.PickAsync(options);
+
+
+            // return result;
+        }
+        catch (Exception ex)
+        {
+            // The user canceled or something went wrong
+        }
+
+        return null;
     }
 }

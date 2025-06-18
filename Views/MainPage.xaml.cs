@@ -26,11 +26,11 @@ public partial class MainPage : ContentPage
 		}
 	}
 
-	protected override async void OnAppearing()
-	{
-		base.OnAppearing();
-		await viewModel.LoadTrailAsync(TrailMap);
-	}
+	// protected override async void OnAppearing()
+	// {
+	// 	base.OnAppearing();
+	// 	await viewModel.LoadTrailAsync(TrailMap);
+	// }
 
 
 	void OnDrawerPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -70,5 +70,11 @@ public partial class MainPage : ContentPage
 	{
 		_isOpen = false;
 		await BottomDrawer.TranslateTo(0, 250, 250, Easing.CubicIn);
+	}
+
+	private void OnAddTrailClicked(object sender, EventArgs e)
+	{
+		// select trail and load
+		_ = viewModel.LoadTrailAsync(TrailMap);
 	}
 }
