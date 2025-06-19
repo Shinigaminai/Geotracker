@@ -16,67 +16,86 @@
         <!--  Bottom Drawer  -->
         <Grid
             x:Name="BottomDrawer"
-            BackgroundColor="{StaticResource Secondary}"
-            HeightRequest="280"
-            TranslationY="250"
+            BackgroundColor="Transparent"
             VerticalOptions="End">
 
-            <!--  Handle  -->
-            <Border
-                Margin="0,10,0,0"
-                BackgroundColor="{StaticResource SecondaryDarkText}"
-                HeightRequest="10"
-                HorizontalOptions="Center"
-                StrokeShape="RoundRectangle 15"
-                StrokeThickness="0"
+            <!--  Floating Add Button  -->
+            <Button
+                x:Name="AddTrailBtn"
+                Margin="0,0,20,20"
+                BackgroundColor="{StaticResource PrimaryDark}"
+                Clicked="OnAddTrailClicked"
+                HorizontalOptions="End"
+                SemanticProperties.Hint="Allows you to load and add a trail to the current list of trails."
+                Text="Add trail"
                 VerticalOptions="Start"
-                WidthRequest="90" />
+                ZIndex="1" />
 
-            <!--  Drawer Content  -->
-            <StackLayout Padding="20,30,10,10">
-                <Label Text="List of Trails" TextColor="{StaticResource SecondaryDarkText}" />
-                <Button
-                    x:Name="AddTrailBtn"
-                    Clicked="OnAddTrailClicked"
-                    HorizontalOptions="End"
-                    SemanticProperties.Hint="Allows you to load and add a trail to the current list of trails."
-                    Text="Add trail" />
-                <CollectionView ItemsSource="{Binding Trails}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Trail">
-                            <Grid
-                                Padding="4"
-                                ColumnDefinitions="Auto, *"
-                                RowDefinitions="Auto, Auto">
-                                <Image
-                                    Grid.RowSpan="2"
-                                    Aspect="AspectFill"
-                                    HeightRequest="60"
-                                    Source="{Binding ImageUrl}"
-                                    WidthRequest="60" />
-                                <Label
-                                    Grid.Column="1"
-                                    FontAttributes="Bold"
-                                    Text="{Binding Name}"
-                                    TextColor="{StaticResource PrimaryDarkText}"
-                                    VerticalOptions="Center" />
-                                <Label
-                                    Grid.Row="1"
-                                    Grid.Column="1"
-                                    FontAttributes="Italic"
-                                    Text="{Binding Location}"
-                                    TextColor="{StaticResource SecondaryDarkText}"
-                                    VerticalOptions="Center" />
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </StackLayout>
+            <!--  Drawer Background Container  -->
+            <Frame
+                Margin="0,30,0,0"
+                Padding="0"
+                BackgroundColor="{StaticResource Secondary}"
+                CornerRadius="20"
+                HasShadow="True"
+                HorizontalOptions="Fill"
+                TranslationY="30"
+                VerticalOptions="Fill">
 
-            <!--  Gesture  -->
-            <Grid.GestureRecognizers>
-                <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
-            </Grid.GestureRecognizers>
+                <Grid RowDefinitions="Auto,*">
+
+                    <!--  Handle  -->
+                    <Border
+                        Margin="0,10,0,0"
+                        BackgroundColor="{StaticResource SecondaryDarkText}"
+                        HeightRequest="10"
+                        HorizontalOptions="Center"
+                        StrokeShape="RoundRectangle 15"
+                        StrokeThickness="0"
+                        VerticalOptions="Start"
+                        WidthRequest="90"
+                        ZIndex="2" />
+
+                    <!--  Drawer Content  -->
+                    <StackLayout x:Name="DrawerContentLayout" Padding="10,30,10,10">
+                        <Label Text="List of Trails" TextColor="{StaticResource SecondaryDarkText}" />
+                        <CollectionView ItemsSource="{Binding Trails}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Trail">
+                                    <Grid
+                                        Padding="4"
+                                        ColumnDefinitions="Auto, *"
+                                        RowDefinitions="Auto, Auto">
+                                        <Image
+                                            Grid.RowSpan="2"
+                                            Aspect="AspectFill"
+                                            HeightRequest="60"
+                                            Source="{Binding ImageUrl}"
+                                            WidthRequest="60" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontAttributes="Bold"
+                                            Text="{Binding Name}"
+                                            TextColor="{StaticResource PrimaryDarkText}"
+                                            VerticalOptions="Center" />
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            FontAttributes="Italic"
+                                            Text="{Binding Location}"
+                                            TextColor="{StaticResource SecondaryDarkText}"
+                                            VerticalOptions="Center" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                    <!--  Gesture  -->
+                    <Grid.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
+                    </Grid.GestureRecognizers>
+                </Grid>
+            </Frame>
         </Grid>
     </Grid>
 </ContentPage>

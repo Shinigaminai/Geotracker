@@ -2,7 +2,6 @@ using System.Xml.Linq;
 using NetTopologySuite.Geometries;
 
 using Geotracker.Models;
-using Java.Util.Logging;
 
 namespace Geotracker.Services;
 
@@ -22,6 +21,10 @@ public class TrailService
         var ns = xdoc.Root?.Name.Namespace;
 
         var trailname = xdoc.Descendants(ns + "name").First().Value;
+        var FirstGpsPoint = xdoc.Descendants(ns + "trkpt").First();
+        var FirstGpsLat = double.Parse(FirstGpsPoint.Attribute("lat")!.Value, System.Globalization.CultureInfo.InvariantCulture);
+        var FirstGpsLon = double.Parse(FirstGpsPoint.Attribute("lat")!.Value, System.Globalization.CultureInfo.InvariantCulture);
+        string location = await GetGeocodeReverseLocation(FirstGpsLat, FirstGpsLon);
         var linePoints = xdoc.Descendants(ns + "trkpt")
             .Select(pt =>
             {
@@ -39,7 +42,7 @@ public class TrailService
         return new Geotracker.Models.Trail
         {
             Name = trailname,
-            Location = "TBD",
+            Location = location,
             Coordinates = linePoints
         };
     }
@@ -74,5 +77,30 @@ public class TrailService
         }
 
         return null;
+    }
+    private async Task<string> GetGeocodeReverseLocation(double latitude, double longitude)
+    {
+        IEnumerable<Placemark> placemarks = await Geocoding.Default.GetPlacemarksAsync(latitude, longitude);
+
+        Placemark? placemark = placemarks?.FirstOrDefault();
+
+        if (placemark != null)
+        {
+            string[] locData = { placemark.CountryCode, placemark.Locality, placemark.SubLocality };
+            locData = [.. locData.Where(c => c != null)];
+            return String.Join(" - ", locData);
+            // $"AdminArea:       {placemark.AdminArea}\n" +
+            // $"CountryCode:     {placemark.CountryCode}\n" +
+            // $"CountryName:     {placemark.CountryName}\n" +
+            // $"FeatureName:     {placemark.FeatureName}\n" +
+            // $"Locality:        {placemark.Locality}\n" +
+            // $"PostalCode:      {placemark.PostalCode}\n" +
+            // $"SubAdminArea:    {placemark.SubAdminArea}\n" +
+            // $"SubLocality:     {placemark.SubLocality}\n" +
+            // $"SubThoroughfare: {placemark.SubThoroughfare}\n" +
+            // $"Thoroughfare:    {placemark.Thoroughfare}\n";
+        }
+
+        return "";
     }
 }
