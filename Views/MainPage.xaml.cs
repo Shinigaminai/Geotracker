@@ -11,7 +11,6 @@ public partial class MainPage : ContentPage
 	int count = 0;
 
 	private double _startY;
-	public double DrawerHeight { get; set; }
 	public double DrawerTranslationY { get; set; }
 	private bool _isOpen = false;
 
@@ -30,43 +29,11 @@ public partial class MainPage : ContentPage
 		}
 	}
 
-	protected override async void OnAppearing()
-	{
-		base.OnAppearing();
-		// await viewModel.LoadTrailAsync(TrailMap);
-
-		var screenHeight = DeviceDisplay.MainDisplayInfo.Height;
-		var screenDensity = DeviceDisplay.MainDisplayInfo.Density;
-		screenHeight = screenHeight / screenDensity; // Use DIPs
-
-		// TODO Calculate the usable screen height (to exclude the status and navigation bars)
-
-		// DrawerHeight = screenHeight * 0.5;  // 50% of screen height
-		// DrawerTranslationY = DrawerHeight - AddTrailBtn.Height - 50 - 20;
-
-		// BottomDrawer.HeightRequest = DrawerHeight;
-		// BottomDrawer.TranslationY = DrawerTranslationY;
-
-		// Debug.WriteLine($"Drawer Height: {DrawerHeight}");
-	}
-
-	protected override void OnSizeAllocated(double width, double height)
-	{
-		base.OnSizeAllocated(width, height);
-
-		// Recalculate drawer height when the size of the screen changes (e.g., rotation)
-		if (width > 0 && height > 0)
-		{
-			DrawerHeight = height * 0.5;
-			BottomDrawer.HeightRequest = DrawerHeight;
-			DrawerTranslationY = DrawerContentLayout.Height +
-								DrawerContentLayout.Margin.Top +
-								DrawerContentLayout.Margin.Bottom +
-								DrawerContentLayout.Padding.Top +
-								DrawerContentLayout.Padding.Bottom;
-		}
-		Debug.WriteLine($"New Drawer Height: {DrawerHeight} and max translation {DrawerTranslationY}");
-	}
+	// protected override async void OnAppearing()
+	// {
+	// 	base.OnAppearing();
+	// 	// await viewModel.LoadTrailAsync(TrailMap);
+	// }
 
 
 	void OnDrawerPanUpdated(object sender, PanUpdatedEventArgs e)
@@ -75,12 +42,16 @@ public partial class MainPage : ContentPage
 		{
 			case GestureStatus.Started:
 				_startY = BottomDrawer.TranslationY;
+				DrawerTranslationY = TrailsCollection.Height +
+							TrailsCollection.Margin.Top +
+							TrailsCollection.Margin.Bottom; ;
+				Debug.WriteLine($"Set max drawer translation to {DrawerTranslationY}");
 				break;
 
 			case GestureStatus.Running:
 				var newY = _startY + e.TotalY;
 				BottomDrawer.TranslationY = Math.Max(0, Math.Min(DrawerTranslationY, newY));
-				Debug.WriteLine($"Drawer Y: {e.TotalY} / {DrawerTranslationY}");
+				Debug.WriteLine($"Drawer Y: {BottomDrawer.TranslationY} / {DrawerTranslationY}");
 				break;
 
 			case GestureStatus.Completed:
