@@ -20,14 +20,18 @@ public class MainPageViewModel : INotifyPropertyChanged
     public ObservableCollection<Trail> Trails { get; set; }
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    private List<Mapsui.Styles.Color> TrailColors = new List<Mapsui.Styles.Color>
+    {
+        Mapsui.Styles.Color.Red,
+        Mapsui.Styles.Color.Blue,
+        Mapsui.Styles.Color.LightCoral,
+        Mapsui.Styles.Color.DarkCyan,
+        Mapsui.Styles.Color.Salmon
+    };
+
     public MainPageViewModel()
     {
-        Trails = new ObservableCollection<Trail>
-            {
-                new Trail { Name = "Forest Path", Location = "Blackwood", ImageUrl = "path.svg" },
-                new Trail { Name = "Mountain Trail", Location = "Alpine Ridge", ImageUrl = "path.svg" },
-                new Trail { Name = "River Walk", Location = "Blue River", ImageUrl = "path.svg" }
-            };
+        Trails = new ObservableCollection<Trail> { };
         _trailService = new TrailService();
     }
 
@@ -46,7 +50,6 @@ public class MainPageViewModel : INotifyPropertyChanged
         }
         var fileStream = await file.OpenReadAsync();
         var trail = await _trailService.LoadTrailFromGpxStreamAsync(fileStream);
-        Trails.Add(trail);
 
         var mercatorCoords = trail.Coordinates
             .Select(c => SphericalMercator.FromLonLat(c.X, c.Y))
@@ -57,9 +60,14 @@ public class MainPageViewModel : INotifyPropertyChanged
         var geometryLine = geometryFactory.CreateLineString(mercatorCoords);
         var trailFeature = new GeometryFeature { Geometry = geometryLine };
 
+        var nrOfColors = TrailColors.Count;
+        var nrOfTrailLayers = Trails.Count;
+        var color = TrailColors[nrOfTrailLayers % nrOfColors];
+        trail.Color = color;
+
         trailFeature.Styles.Add(new VectorStyle
         {
-            Line = new Pen(Mapsui.Styles.Color.Red, 3)
+            Line = new Pen(color, 3)
         });
 
         var layer = new MemoryLayer
@@ -67,8 +75,9 @@ public class MainPageViewModel : INotifyPropertyChanged
             Name = "Trail-" + trail.Name,
             Features = new[] { trailFeature }
         };
-
+        trail.Layer = layer;
         map.Map.Layers.Add(layer);
+        Trails.Add(trail);
 
         // Zoom to trail
         var mrect = geometryLine.EnvelopeInternal.ToMRect();

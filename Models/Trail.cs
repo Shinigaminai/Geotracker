@@ -1,4 +1,5 @@
 using NetTopologySuite.Geometries;
+using Mapsui.Layers;
 
 namespace Geotracker.Models
 {
@@ -11,5 +12,7 @@ namespace Geotracker.Models
 
         // List of GPS Points (lon/lat)
         public Coordinate[] Coordinates { get; set; } = [];
+        public MemoryLayer? Layer { get; set; }
+        public Mapsui.Styles.Color Color { get; set; } = Mapsui.Styles.Color.Red;
     }
 }

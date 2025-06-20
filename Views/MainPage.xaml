@@ -57,8 +57,8 @@
                     <CollectionView
                         x:Name="TrailsCollection"
                         Grid.Row="1"
-                        BackgroundColor="#81A52A2A"
                         BindableLayout.EmptyView="No trails"
+                        EmptyView="no trails loaded"
                         HeightRequest="300"
                         ItemsLayout="VerticalList"
                         ItemsSource="{Binding Trails}"
@@ -68,13 +68,22 @@
                                 <Grid
                                     Padding="4"
                                     ColumnDefinitions="Auto, *"
-                                    RowDefinitions="Auto, Auto">
-                                    <Image
+                                    ColumnSpacing="4"
+                                    RowDefinitions="Auto, Auto"
+                                    RowSpacing="4">
+                                    <Border
                                         Grid.RowSpan="2"
-                                        Aspect="AspectFill"
-                                        HeightRequest="60"
-                                        Source="{Binding ImageUrl}"
-                                        WidthRequest="60" />
+                                        BackgroundColor="{StaticResource PrimaryDark}"
+                                        HorizontalOptions="Center"
+                                        StrokeShape="RoundRectangle 10,10,10,10"
+                                        StrokeThickness="0"
+                                        VerticalOptions="Center">
+                                        <Image
+                                            Aspect="AspectFill"
+                                            HeightRequest="45"
+                                            Source="{Binding ImageUrl}"
+                                            WidthRequest="45" />
+                                    </Border>
                                     <Label
                                         Grid.Column="1"
                                         FontAttributes="Bold"

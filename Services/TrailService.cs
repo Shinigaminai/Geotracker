@@ -2,6 +2,7 @@ using System.Xml.Linq;
 using NetTopologySuite.Geometries;
 
 using Geotracker.Models;
+using System.Diagnostics;
 
 namespace Geotracker.Services;
 
@@ -74,6 +75,7 @@ public class TrailService
         catch (Exception ex)
         {
             // The user canceled or something went wrong
+            Debug.WriteLine(ex.Message);
         }
 
         return null;

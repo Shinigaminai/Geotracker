@@ -26,6 +26,7 @@ public partial class MainPage : ContentPage
 		{
 			TrailMap.Map.CRS = "EPSG:3857";
 			TrailMap.Map.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
+			TrailMap.Map.Navigator.RotationLock = true;
 		}
 	}
 
