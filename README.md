@@ -1,6 +1,10 @@
 # Geotracker
 
 An android application written with .NET MAUI to visualize multiple GPS tracks.
+You need your track data in GPX format.
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=FF3C00&width=435&lines=Work+in+progress)](https://git.io/typing-svg)
+
 Developed on Linux.
 
 # Development
