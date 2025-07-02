@@ -3,110 +3,13 @@
     x:Class="Geotracker.MainPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Geotracker.Controls"
     xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
     xmlns:models="clr-namespace:Geotracker.Models">
 
-    <Grid>
-
-        <mapsui:MapControl
-            x:Name="TrailMap"
-            BackgroundColor="White"
-            VerticalOptions="Fill" />
-
-        <!--  Bottom Drawer  -->
-        <StackLayout x:Name="BottomDrawer" VerticalOptions="End">
-
-            <!--  Floating Add Button  -->
-            <Button
-                x:Name="AddTrailBtn"
-                Margin="20"
-                BackgroundColor="{StaticResource PrimaryDark}"
-                Clicked="OnAddTrailClicked"
-                HeightRequest="40"
-                HorizontalOptions="End"
-                SemanticProperties.Hint="Allows you to load and add a trail to the current list of trails."
-                Text="Add trail"
-                VerticalOptions="Start"
-                ZIndex="1" />
-
-            <!--  Drawer Background Container  -->
-            <Border
-                Margin="0,0,0,0"
-                Padding="0"
-                BackgroundColor="{StaticResource Secondary}"
-                HorizontalOptions="Fill"
-                StrokeShape="RoundRectangle 30,30,0,0"
-                StrokeThickness="0"
-                VerticalOptions="Fill">
-
-                <Grid RowDefinitions="Auto, *">
-
-                    <!--  Handle  -->
-                    <Border
-                        Grid.Row="0"
-                        Margin="0,10,0,10"
-                        BackgroundColor="{StaticResource SecondaryDarkText}"
-                        HeightRequest="10"
-                        HorizontalOptions="Center"
-                        StrokeShape="RoundRectangle 15"
-                        StrokeThickness="0"
-                        VerticalOptions="Start"
-                        WidthRequest="90" />
-
-                    <!--  Drawer Content Grid  -->
-                    <CollectionView
-                        x:Name="TrailsCollection"
-                        Grid.Row="1"
-                        BindableLayout.EmptyView="No trails"
-                        EmptyView="no trails loaded"
-                        HeightRequest="300"
-                        ItemsLayout="VerticalList"
-                        ItemsSource="{Binding Trails}"
-                        VerticalOptions="Fill">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:Trail">
-                                <Grid
-                                    Padding="4"
-                                    ColumnDefinitions="Auto, *"
-                                    ColumnSpacing="4"
-                                    RowDefinitions="Auto, Auto"
-                                    RowSpacing="4">
-                                    <Border
-                                        Grid.RowSpan="2"
-                                        BackgroundColor="{StaticResource PrimaryDark}"
-                                        HorizontalOptions="Center"
-                                        StrokeShape="RoundRectangle 10,10,10,10"
-                                        StrokeThickness="0"
-                                        VerticalOptions="Center">
-                                        <Image
-                                            Aspect="AspectFill"
-                                            HeightRequest="45"
-                                            Source="{Binding ImageUrl}"
-                                            WidthRequest="45" />
-                                    </Border>
-                                    <Label
-                                        Grid.Column="1"
-                                        FontAttributes="Bold"
-                                        Text="{Binding Name}"
-                                        TextColor="{StaticResource PrimaryDarkText}"
-                                        VerticalOptions="Center" />
-                                    <Label
-                                        Grid.Row="1"
-                                        Grid.Column="1"
-                                        FontAttributes="Italic"
-                                        Text="{Binding Location}"
-                                        TextColor="{StaticResource SecondaryDarkText}"
-                                        VerticalOptions="Center" />
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <!--  Gesture  -->
-                    <Grid.GestureRecognizers>
-                        <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
-                    </Grid.GestureRecognizers>
-                </Grid>
-            </Border>
-        </StackLayout>
+    <Grid BackgroundColor="Green">
+        <controls:BottomDrawerView ButtonClicked="OnAddTrailClicked">
+            <Label Text="Empty" />
+        </controls:BottomDrawerView>
     </Grid>
 </ContentPage>
