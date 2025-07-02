@@ -8,52 +8,67 @@
     xmlns:models="clr-namespace:Geotracker.Models">
 
     <Grid>
-        <Image x:Name="TrailMap" Source="dotnet_bot.png" />
-        <!-- <mapsui:MapControl
+        <!-- <Image x:Name="TrailMap" Source="dotnet_bot.png" /> -->
+        <mapsui:MapControl
             x:Name="TrailMap"
             BackgroundColor="White"
-            VerticalOptions="Fill" />-->
+            VerticalOptions="Fill" />
 
         <controls:BottomDrawerView ButtonClicked="OnAddTrailClicked" VerticalOptions="End">
             <CollectionView
                 x:Name="TrailsCollection"
                 HeightRequest="300"
                 ItemsLayout="VerticalList"
-                ItemsSource="{Binding Trails}"
+                ItemsSource="{Binding TrailItems}"
                 VerticalOptions="Fill">
                 <CollectionView.EmptyView>
                     <ContentView>
+
                         <Grid HorizontalOptions="Center" VerticalOptions="Center">
                             <Label Text="There are currently no trails loaded..." />
                         </Grid>
+
                     </ContentView>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:Trail">
-                        <Grid
-                            Padding="4"
-                            ColumnDefinitions="Auto, *"
-                            RowDefinitions="Auto, Auto">
-                            <Image
-                                Grid.RowSpan="2"
-                                Aspect="AspectFill"
-                                HeightRequest="60"
-                                Source="{Binding ImageUrl}"
-                                WidthRequest="60" />
-                            <Label
-                                Grid.Column="1"
-                                FontAttributes="Bold"
-                                Text="{Binding Name}"
-                                TextColor="{StaticResource PrimaryDarkText}"
-                                VerticalOptions="Center" />
-                            <Label
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                FontAttributes="Italic"
-                                Text="{Binding Location}"
-                                TextColor="{StaticResource SecondaryDarkText}"
-                                VerticalOptions="Center" />
-                        </Grid>
+                    <DataTemplate x:DataType="models:TrailItem">
+
+                        <SwipeView>
+                            <SwipeView.RightItems>
+                                <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="Red"
+                                        CommandParameter="{Binding .}"
+                                        Invoked="OnDeleteTrailInvoked"
+                                        Text="🗑 Delete" />
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Grid
+                                Padding="4"
+                                BackgroundColor="{StaticResource Secondary}"
+                                ColumnDefinitions="Auto, *"
+                                RowDefinitions="Auto, Auto">
+                                <Image
+                                    Grid.RowSpan="2"
+                                    Aspect="AspectFill"
+                                    HeightRequest="60"
+                                    Source="{Binding ImageUrl}"
+                                    WidthRequest="60" />
+                                <Label
+                                    Grid.Column="1"
+                                    FontAttributes="Bold"
+                                    Text="{Binding Trail.Name}"
+                                    TextColor="{StaticResource PrimaryDarkText}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    FontAttributes="Italic"
+                                    Text="{Binding Trail.Location}"
+                                    TextColor="{StaticResource SecondaryDarkText}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </SwipeView>
 
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

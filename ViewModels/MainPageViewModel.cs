@@ -17,7 +17,7 @@ namespace Geotracker.ViewModels;
 public class MainPageViewModel : INotifyPropertyChanged
 {
     private readonly TrailService _trailService;
-    public ObservableCollection<Trail> Trails { get; set; }
+    public ObservableCollection<TrailItem> TrailItems { get; set; }
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private List<Mapsui.Styles.Color> TrailColors = new List<Mapsui.Styles.Color>
@@ -31,7 +31,7 @@ public class MainPageViewModel : INotifyPropertyChanged
 
     public MainPageViewModel()
     {
-        Trails = new ObservableCollection<Trail> { };
+        TrailItems = new ObservableCollection<TrailItem> { };
         _trailService = new TrailService();
     }
 
@@ -61,9 +61,8 @@ public class MainPageViewModel : INotifyPropertyChanged
         var trailFeature = new GeometryFeature { Geometry = geometryLine };
 
         var nrOfColors = TrailColors.Count;
-        var nrOfTrailLayers = Trails.Count;
+        var nrOfTrailLayers = TrailItems.Count;
         var color = TrailColors[nrOfTrailLayers % nrOfColors];
-        trail.Color = color;
 
         trailFeature.Styles.Add(new VectorStyle
         {
@@ -75,12 +74,14 @@ public class MainPageViewModel : INotifyPropertyChanged
             Name = "Trail-" + trail.Name,
             Features = new[] { trailFeature }
         };
-        trail.Layer = layer;
         map.Map.Layers.Add(layer);
-        Trails.Add(trail);
+
+        TrailItem trailItem = new TrailItem { Color = color, Layer = layer, Trail = trail };
+        TrailItems.Add(trailItem);
 
         // Zoom to trail
-        var mrect = geometryLine.EnvelopeInternal.ToMRect();
+        var envelope = geometryLine.EnvelopeInternal;
+        var mrect = envelope.ToMRect();
         map.Map.Navigator.ZoomToBox(mrect, MBoxFit.Fit);
     }
 }
