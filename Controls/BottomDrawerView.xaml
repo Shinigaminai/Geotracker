@@ -3,45 +3,55 @@
     x:Class="Geotracker.Controls.BottomDrawerView"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Name="This">
-    <!--
-    <Grid x:Name="DrawerContainer" VerticalOptions="End">
+    x:Name="this">
+    <ContentView.ControlTemplate>
+        <ControlTemplate>
 
-        <Button
-            x:Name="FloatingBtn"
-            Margin="20"
-            BackgroundColor="{StaticResource PrimaryDark}"
-            Clicked="_onButtonClicked"
-            HeightRequest="40"
-            HorizontalOptions="End"
-            Text="Add trail"
-            VerticalOptions="Start" />
 
-        <Border
-            Margin="0,80,0,0"
-            BackgroundColor="{StaticResource Secondary}"
-            HorizontalOptions="Fill"
-            StrokeShape="RoundRectangle 30,30,0,0"
-            VerticalOptions="Fill">
-
-            <Grid RowDefinitions="Auto, *">
+            <Grid
+                x:Name="DrawerContainer"
+                BindingContext="{x:Reference this}"
+                RowDefinitions="Auto, *"
+                VerticalOptions="End">
+                <Button
+                    x:Name="FloatingBtn"
+                    Margin="20"
+                    BackgroundColor="{StaticResource Primary}"
+                    Clicked="_onButtonClicked"
+                    HeightRequest="40"
+                    HorizontalOptions="End"
+                    Text="Add trail"
+                    VerticalOptions="Start" />
 
                 <Border
-                    Grid.Row="0"
-                    Margin="0,10,0,10"
-                    BackgroundColor="{StaticResource SecondaryDarkText}"
-                    HeightRequest="10"
-                    HorizontalOptions="Center"
-                    StrokeShape="RoundRectangle 15"
-                    VerticalOptions="Start"
-                    WidthRequest="90" />
+                    Margin="0,80,0,0"
+                    BackgroundColor="{StaticResource Secondary}"
+                    HorizontalOptions="Fill"
+                    StrokeShape="RoundRectangle 30,30,0,0"
+                    VerticalOptions="Fill">
 
-                <ContentPresenter Content="{Binding Content, Source={x:Reference This}}" />
+                    <Grid RowDefinitions="Auto, *">
 
-                <Grid.GestureRecognizers>
-                    <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
-                </Grid.GestureRecognizers>
+                        <Border
+                            Grid.Row="0"
+                            Margin="0,10,0,10"
+                            BackgroundColor="{StaticResource Primary}"
+                            HeightRequest="10"
+                            HorizontalOptions="Center"
+                            StrokeShape="RoundRectangle 15"
+                            VerticalOptions="Start"
+                            WidthRequest="90" />
+
+                        <ContentPresenter Grid.Row="1" Content="{Binding Content, Source={x:Reference this}}" />
+
+                        <Grid.GestureRecognizers>
+                            <PanGestureRecognizer PanUpdated="OnDrawerPanUpdated" />
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </Border>
+
             </Grid>
-        </Border>
-    </Grid>-->
+
+        </ControlTemplate>
+    </ContentView.ControlTemplate>
 </ContentView>
