@@ -23,9 +23,9 @@ public partial class MainPage : ContentPage
 		// }
 	}
 
-	// private void OnAddTrailClicked(object sender, EventArgs e)
-	// {
-	// 	// select trail and load
-	// 	_ = viewModel.LoadTrailAsync(TrailMap);
-	// }
+	private void OnAddTrailClicked(object sender, EventArgs e)
+	{
+		// select trail and load
+		// _ = viewModel.LoadTrailAsync(TrailMap);
+	}
 }
