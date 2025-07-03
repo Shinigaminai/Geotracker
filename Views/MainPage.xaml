@@ -47,13 +47,22 @@
                                 Padding="4"
                                 BackgroundColor="{StaticResource Secondary}"
                                 ColumnDefinitions="Auto, *"
-                                RowDefinitions="Auto, Auto">
-                                <Image
+                                ColumnSpacing="4"
+                                RowDefinitions="Auto, Auto"
+                                RowSpacing="4">
+                                <Border
                                     Grid.RowSpan="2"
-                                    Aspect="AspectFill"
-                                    HeightRequest="60"
-                                    Source="{Binding ImageUrl}"
-                                    WidthRequest="60" />
+                                    BackgroundColor="{Binding Color}"
+                                    HorizontalOptions="Center"
+                                    Stroke="{Binding Color}"
+                                    StrokeShape="RoundRectangle 5"
+                                    VerticalOptions="Start">
+                                    <Image
+                                        Aspect="AspectFill"
+                                        HeightRequest="40"
+                                        Source="{Binding ImageUrl}"
+                                        WidthRequest="40" />
+                                </Border>
                                 <Label
                                     Grid.Column="1"
                                     FontAttributes="Bold"

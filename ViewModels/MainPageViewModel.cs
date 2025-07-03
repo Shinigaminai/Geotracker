@@ -20,13 +20,15 @@ public class MainPageViewModel : INotifyPropertyChanged
     public ObservableCollection<TrailItem> TrailItems { get; set; }
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    private List<Mapsui.Styles.Color> TrailColors = new List<Mapsui.Styles.Color>
+    private List<Microsoft.Maui.Graphics.Color> TrailColors = new List<Microsoft.Maui.Graphics.Color>
     {
-        Mapsui.Styles.Color.Red,
-        Mapsui.Styles.Color.Blue,
-        Mapsui.Styles.Color.LightCoral,
-        Mapsui.Styles.Color.DarkCyan,
-        Mapsui.Styles.Color.Salmon
+        Colors.Red,
+        Colors.LightCoral,
+        Colors.Teal,
+        Colors.Blue,
+        Colors.DeepPink,
+        Colors.DarkCyan,
+        Colors.Purple
     };
 
     public MainPageViewModel()
@@ -64,9 +66,10 @@ public class MainPageViewModel : INotifyPropertyChanged
         var nrOfTrailLayers = TrailItems.Count;
         var color = TrailColors[nrOfTrailLayers % nrOfColors];
 
+        Mapsui.Styles.Color mapsuiColor = Mapsui.Styles.Color.FromString(color.ToArgbHex());
         trailFeature.Styles.Add(new VectorStyle
         {
-            Line = new Pen(color, 3)
+            Line = new Pen(mapsuiColor, 3)
         });
 
         var layer = new MemoryLayer

@@ -8,6 +8,7 @@ namespace Geotracker.Models
         public required Trail Trail { get; set; }
         public string ImageUrl { get; set; } = "path.svg";
         public required MemoryLayer Layer { get; set; }
-        public Mapsui.Styles.Color Color { get; set; } = Mapsui.Styles.Color.Red;
+        // public Mapsui.Styles.Color Color { get; set; } = Mapsui.Styles.Color.Red;
+        public Color Color { get; set; } = Colors.Red;
     }
 }
