@@ -37,6 +37,11 @@
                             <SwipeView.RightItems>
                                 <SwipeItems>
                                     <SwipeItem
+                                        BackgroundColor="Aqua"
+                                        CommandParameter="{Binding .}"
+                                        Invoked="OnZoomToTrailInvoked"
+                                        Text="📌 Show" />
+                                    <SwipeItem
                                         BackgroundColor="Red"
                                         CommandParameter="{Binding .}"
                                         Invoked="OnDeleteTrailInvoked"
