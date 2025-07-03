@@ -11,6 +11,7 @@ using Mapsui.Nts;
 using Mapsui.Styles;
 using Mapsui;
 using Mapsui.Nts.Extensions;
+using System.Diagnostics;
 
 namespace Geotracker.ViewModels;
 
@@ -79,12 +80,25 @@ public class MainPageViewModel : INotifyPropertyChanged
         };
         map.Map.Layers.Add(layer);
 
-        TrailItem trailItem = new TrailItem { Color = color, Layer = layer, Trail = trail };
+        TrailItem trailItem = new TrailItem
+        {
+            Color = color,
+            Layer = layer,
+            Trail = trail,
+            Envelope = geometryLine.EnvelopeInternal
+        };
         TrailItems.Add(trailItem);
 
-        // Zoom to trail
-        var envelope = geometryLine.EnvelopeInternal;
-        var mrect = envelope.ToMRect();
-        map.Map.Navigator.ZoomToBox(mrect, MBoxFit.Fit);
+        // Zoom to fit all trails
+        var newEnvelope = new Envelope();
+
+        foreach (TrailItem TrailItem in TrailItems)
+        {
+            newEnvelope.ExpandedBy(TrailItem.Envelope);
+            Debug.WriteLine("Expand area for trail \"" + TrailItem.Trail.Name + "\"");
+        }
+
+        newEnvelope.ExpandBy(1000);
+        map.Map.Navigator.ZoomToBox(newEnvelope.ToMRect(), MBoxFit.Fit);
     }
 }
