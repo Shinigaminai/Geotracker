@@ -7,6 +7,7 @@ using System.Diagnostics;
 using NetTopologySuite.Geometries;
 using Mapsui.Nts.Extensions;
 using Mapsui;
+using System.Threading.Tasks;
 
 public partial class MainPage : ContentPage
 {
@@ -26,11 +27,22 @@ public partial class MainPage : ContentPage
 		}
 	}
 
-	private void OnAddTrailClicked(object sender, EventArgs e)
+	private async Task AddTrailAsync()
 	{
 		// select trail and load
-		_ = viewModel.LoadTrailAsync(TrailMap);
-		ZoomToTrails();
+		var file = await viewModel.ChooseGPXFile();
+		// maybe user cancelled?
+		if (file != null)
+		{
+			Trail trail = await viewModel.LoadTrailAsync(file);
+			viewModel.AddTrailToMap(trail, TrailMap);
+			ZoomToTrails();
+		}
+	}
+
+	private void OnAddTrailClicked(object sender, EventArgs e)
+	{
+		_ = AddTrailAsync();
 	}
 
 	private void OnDeleteTrailInvoked(object sender, EventArgs e)
@@ -71,7 +83,7 @@ public partial class MainPage : ContentPage
 
 	private void ZoomToArea(Envelope envelope)
 	{
-		envelope.ExpandBy(20.0);
+		envelope.ExpandBy(150.0);
 		TrailMap.Map.Navigator.ZoomToBox(envelope.ToMRect(), MBoxFit.Fit);
 	}
 }

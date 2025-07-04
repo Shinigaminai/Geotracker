@@ -44,17 +44,19 @@ public class MainPageViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public async Task LoadTrailAsync(MapControl map)
+    public async Task<FileResult?> ChooseGPXFile()
     {
-        var file = await _trailService.PickGpxFile();
-        if (file == null)
-        {
-            // maybe user cancelled?
-            return;
-        }
-        var fileStream = await file.OpenReadAsync();
-        var trail = await _trailService.LoadTrailFromGpxStreamAsync(fileStream);
+        return await _trailService.PickGpxFile();
+    }
 
+    public async Task<Trail> LoadTrailAsync(FileResult file)
+    {
+        var fileStream = await file.OpenReadAsync();
+        return await _trailService.LoadTrailFromGpxStreamAsync(fileStream);
+
+    }
+    public void AddTrailToMap(Trail trail, MapControl map)
+    {
         var mercatorCoords = trail.Coordinates
             .Select(c => SphericalMercator.FromLonLat(c.X, c.Y))
             .Select(p => new Coordinate(p.x, p.y))
