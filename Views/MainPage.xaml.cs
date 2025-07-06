@@ -51,6 +51,7 @@ public partial class MainPage : ContentPage
 		{
 			TrailMap.Map.Layers.Remove(trailToDelete.Layer);
 			viewModel.TrailItems.Remove(trailToDelete);
+			ZoomToTrails();
 		}
 	}
 
@@ -83,7 +84,40 @@ public partial class MainPage : ContentPage
 
 	private void ZoomToArea(Envelope envelope)
 	{
-		envelope.ExpandBy(150.0);
-		TrailMap.Map.Navigator.ZoomToBox(envelope.ToMRect(), MBoxFit.Fit);
+		envelope = new Envelope(envelope);
+		// leave space for the bottom drawer
+		// TODO if vertically limited
+		var availableMapHeight = TrailMap.Height - BottomDrawer.Height + BottomDrawer.TranslationY;
+		var blockedMapHeight = TrailMap.Height - availableMapHeight;
+		var envelopePerDisplayUnitHeight = envelope.Height / availableMapHeight;
+		var missingVerticalEnvelopeBasedOnHeight = blockedMapHeight * envelopePerDisplayUnitHeight;
+		// if horizontally limited
+		var availableMapWidth = TrailMap.Width;
+		var envelopeWidth = envelope.Width;
+		var envelopePerDisplayUnitWidth = envelopeWidth / availableMapWidth;
+		var missingVerticalEnvelopeBasedOnWidth = envelopePerDisplayUnitWidth * BottomDrawer.Height;
+
+		var missingVerticalEnvelope = Math.Max(missingVerticalEnvelopeBasedOnHeight, missingVerticalEnvelopeBasedOnWidth);
+		var envelopePerDisplayUnit = Math.Max(envelopePerDisplayUnitHeight, envelopePerDisplayUnitWidth);
+
+		// add border
+		envelope.ExpandBy(100.0 * envelopePerDisplayUnit);
+
+		// expand downwards
+		var envelopeLowerPoint = envelope.Centre;
+		if (envelopeLowerPoint != null)
+		{
+			envelopeLowerPoint.Y -= (envelope.Height / 2) + missingVerticalEnvelope;
+			// extra lowerer border to keep center
+			envelopeLowerPoint.Y -= 100.0 * envelopePerDisplayUnit * (blockedMapHeight / availableMapHeight) / 2;
+			envelope.ExpandToInclude(envelopeLowerPoint);
+		}
+
+		TrailMap.Map.Navigator.ZoomToBox(
+			envelope.ToMRect(),
+			MBoxFit.Fit,
+			800,
+			Mapsui.Animations.Easing.CubicInOut
+		);
 	}
 }

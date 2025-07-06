@@ -14,7 +14,10 @@
             BackgroundColor="White"
             VerticalOptions="Fill" />
 
-        <controls:BottomDrawerView ButtonClicked="OnAddTrailClicked" VerticalOptions="End">
+        <controls:BottomDrawerView
+            x:Name="BottomDrawer"
+            ButtonClicked="OnAddTrailClicked"
+            VerticalOptions="End">
             <CollectionView
                 x:Name="TrailsCollection"
                 HeightRequest="300"
