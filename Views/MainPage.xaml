@@ -14,7 +14,10 @@
             BackgroundColor="White"
             VerticalOptions="Fill" />
 
-        <controls:BottomDrawerView ButtonClicked="OnAddTrailClicked" VerticalOptions="End">
+        <controls:BottomDrawerView
+            x:Name="BottomDrawer"
+            ButtonClicked="OnAddTrailClicked"
+            VerticalOptions="End">
             <CollectionView
                 x:Name="TrailsCollection"
                 HeightRequest="300"
@@ -36,6 +39,11 @@
                         <SwipeView>
                             <SwipeView.RightItems>
                                 <SwipeItems>
+                                    <SwipeItem
+                                        BackgroundColor="Aqua"
+                                        CommandParameter="{Binding .}"
+                                        Invoked="OnZoomToTrailInvoked"
+                                        Text="📌 Show" />
                                     <SwipeItem
                                         BackgroundColor="Red"
                                         CommandParameter="{Binding .}"
