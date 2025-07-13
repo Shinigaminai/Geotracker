@@ -10,8 +10,10 @@ public partial class BottomDrawerView : ContentView
     private View _contentPresenter;
 
     private double _startY;
-    public double DrawerTranslationY { get; set; }
+    public double DrawerTranslationY { get; set; } = 0.0;
     public event EventHandler? ButtonClicked;
+    public event EventHandler? OnDrawerOpened;
+    public event EventHandler? OnDrawerClosed;
     public BottomDrawerView()
     {
         InitializeComponent();
@@ -29,9 +31,6 @@ public partial class BottomDrawerView : ContentView
         {
             _floatingBtn.Clicked += _onButtonClicked;
         }
-
-        // Optional: Debug to verify it's working
-        System.Diagnostics.Debug.WriteLine($"DrawerContainer found: {_drawerContainer != null}");
     }
 
     private void _onButtonClicked(object sender, EventArgs e)
@@ -73,11 +72,15 @@ public partial class BottomDrawerView : ContentView
 
     private async void OpenDrawer()
     {
+        DrawerTranslationY = 0.0;
         await _drawerContainer.TranslateTo(0, 0, 250, Easing.CubicOut);
+        OnDrawerOpened?.Invoke(this, EventArgs.Empty);
     }
 
     private async void CloseDrawer()
     {
+        // DrawerTranslationY set by drawer pan gesture start
         await _drawerContainer.TranslateTo(0, DrawerTranslationY, 250, Easing.CubicIn);
+        OnDrawerClosed?.Invoke(this, EventArgs.Empty);
     }
 }

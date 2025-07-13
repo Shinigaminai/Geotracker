@@ -63,6 +63,11 @@ public partial class MainPage : ContentPage
 		}
 	}
 
+	private void OnZoomToTrailsInvoked(object sender, EventArgs e)
+	{
+		ZoomToTrails();
+	}
+
 	private void ZoomToTrail(TrailItem trailItem)
 	{
 		ZoomToArea(trailItem.Envelope);
@@ -72,12 +77,13 @@ public partial class MainPage : ContentPage
 	{
 		// Zoom to fit all trails
 		var newEnvelope = new Envelope();
+		Debug.WriteLine("Zooming to fit all trails.");
 
 		foreach (TrailItem TrailItem in viewModel.TrailItems)
 		{
 			newEnvelope = newEnvelope.ExpandedBy(TrailItem.Envelope);
-			Debug.WriteLine("Expand area for trail \"" + TrailItem.Trail.Name + "\"");
-			Debug.WriteLine("Area: " + newEnvelope.Area.ToString() + " at " + newEnvelope.Centre.ToString());
+			// Debug.WriteLine("Expand area for trail \"" + TrailItem.Trail.Name + "\"");
+			// Debug.WriteLine("Area: " + newEnvelope.Area.ToString() + " at " + newEnvelope.Centre.ToString());
 		}
 		ZoomToArea(newEnvelope);
 	}
@@ -87,7 +93,7 @@ public partial class MainPage : ContentPage
 		envelope = new Envelope(envelope);
 		// leave space for the bottom drawer
 		// TODO if vertically limited
-		var availableMapHeight = TrailMap.Height - BottomDrawer.Height + BottomDrawer.TranslationY;
+		var availableMapHeight = TrailMap.Height - BottomDrawer.Height + BottomDrawer.DrawerTranslationY;
 		var blockedMapHeight = TrailMap.Height - availableMapHeight;
 		var envelopePerDisplayUnitHeight = envelope.Height / availableMapHeight;
 		var missingVerticalEnvelopeBasedOnHeight = blockedMapHeight * envelopePerDisplayUnitHeight;

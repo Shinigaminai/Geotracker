@@ -17,6 +17,8 @@
         <controls:BottomDrawerView
             x:Name="BottomDrawer"
             ButtonClicked="OnAddTrailClicked"
+            OnDrawerClosed="OnZoomToTrailsInvoked"
+            OnDrawerOpened="OnZoomToTrailsInvoked"
             VerticalOptions="End">
             <CollectionView
                 x:Name="TrailsCollection"
