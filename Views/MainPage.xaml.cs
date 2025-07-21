@@ -27,10 +27,9 @@ public partial class MainPage : ContentPage
 		}
 	}
 
-	private async Task AddTrailAsync()
+	private async void AddTrailAsync()
 	{
-		// select trail and load
-		var file = await viewModel.ChooseGPXFile();
+		FileResult? file = await viewModel.ChooseGPXFile();
 		// maybe user cancelled?
 		if (file != null)
 		{
@@ -42,7 +41,7 @@ public partial class MainPage : ContentPage
 
 	private void OnAddTrailClicked(object sender, EventArgs e)
 	{
-		_ = AddTrailAsync();
+		AddTrailAsync();
 	}
 
 	private void OnDeleteTrailInvoked(object sender, EventArgs e)
@@ -75,6 +74,8 @@ public partial class MainPage : ContentPage
 
 	private void ZoomToTrails()
 	{
+		if (viewModel.TrailItems.Count < 1)
+			return;
 		// Zoom to fit all trails
 		var newEnvelope = new Envelope();
 		Debug.WriteLine("Zooming to fit all trails.");
@@ -82,8 +83,6 @@ public partial class MainPage : ContentPage
 		foreach (TrailItem TrailItem in viewModel.TrailItems)
 		{
 			newEnvelope = newEnvelope.ExpandedBy(TrailItem.Envelope);
-			// Debug.WriteLine("Expand area for trail \"" + TrailItem.Trail.Name + "\"");
-			// Debug.WriteLine("Area: " + newEnvelope.Area.ToString() + " at " + newEnvelope.Centre.ToString());
 		}
 		ZoomToArea(newEnvelope);
 	}

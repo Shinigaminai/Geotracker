@@ -26,11 +26,6 @@ public partial class BottomDrawerView : ContentView
         _drawerContainer = GetTemplateChild("DrawerContainer") as Grid;
         _floatingBtn = GetTemplateChild("FloatingBtn") as Button;
         _contentPresenter = GetTemplateChild("ContentPresenter") as View;
-
-        if (_floatingBtn != null)
-        {
-            _floatingBtn.Clicked += _onButtonClicked;
-        }
     }
 
     private void _onButtonClicked(object sender, EventArgs e)
@@ -53,7 +48,7 @@ public partial class BottomDrawerView : ContentView
             case GestureStatus.Running:
                 var newY = _startY + e.TotalY;
                 _drawerContainer.TranslationY = Math.Max(0, Math.Min(DrawerTranslationY, newY));
-                Debug.WriteLine($"Drawer Y: {_drawerContainer.TranslationY} / {DrawerTranslationY}");
+                // Debug.WriteLine($"Drawer Y: {_drawerContainer.TranslationY} / {DrawerTranslationY}");
                 break;
 
             case GestureStatus.Completed:

@@ -48,7 +48,7 @@ public class TrailService
         };
     }
 
-    public async Task<FileResult?> PickGpxFile()
+    public Task<FileResult?> PickGpxFile()
     {
         try
         {
@@ -64,21 +64,17 @@ public class TrailService
 
             PickOptions options = new()
             {
-                PickerTitle = "Please select a comic file",
+                PickerTitle = "Please select a GPX file",
                 FileTypes = customFileType,
             };
-            return await FilePicker.Default.PickAsync(options);
-
-
-            // return result;
+            return FilePicker.Default.PickAsync(options);
         }
         catch (Exception ex)
         {
-            // The user canceled or something went wrong
+            Debug.WriteLine("File picker: The user canceled or something went wrong");
             Debug.WriteLine(ex.Message);
         }
-
-        return null;
+        return Task.FromResult<FileResult?>(null);
     }
     private async Task<string> GetGeocodeReverseLocation(double latitude, double longitude)
     {
